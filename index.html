@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refugio para Amanda</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #f2f2f2;
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #ui-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Pantalla de acceso */
+        #pantalla-clave {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 1s ease;
+            background: rgba(13, 13, 13, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            z-index: 30;
+        }
+
+        input {
+            margin-top: 20px;
+            padding: 12px;
+            font-size: 1rem;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #1a1a1a;
+            color: #fff;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        /* Mensajes de texto */
+        .escena {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            max-width: 85%;
+            pointer-events: none;
+            text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.9);
+            z-index: 20;
+        }
+
+        .final-texto {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: #ffb6c1;
+            font-weight: bold;
+        }
+
+        /* Imágenes de las flores */
+        .flor-img {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 2.5s ease-in-out;
+            max-width: 85%;
+            max-height: 52vh;
+            object-fit: contain;
+            z-index: 5;
+            transform: translateY(-8%);
+        }
+
+        .visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="ui-container">
+        <!-- 1. Clave secreta -->
+        <div id="pantalla-clave">
+            <p style="font-size: 1.1rem; margin-bottom: 5px;">Para entrar al refugio,</p>
+            <p style="font-size: 1.1rem; margin-top: 0;">ingresa donde nos conocimos:</p>
+            <input type="text" id="clave" placeholder="Tu respuesta...">
+            <button onclick="verificarClave()">Entrar</button>
+            <p id="error"
+                style="color: #ff6b6b; font-size: 0.9rem; opacity: 0; transition: opacity 0.5s; margin-top: 15px;">Ese
+                no es el lugar correcto, inténtalo de nuevo.</p>
+        </div>
+
+        <!-- 2. Textos de introducción -->
+        <div id="mensaje1" class="escena">"Creé este pequeño refugio aquí para recordarte que, sin importar la distancia
+            o el momento, siempre seré un lugar seguro para ti.<br><br>Te quiero muchísimo."</div>
+        <div id="mensaje2" class="escena">"Aunque ahora no podamos estar juntos, mi apoyo incondicional te acompaña a
+            donde vayas.<br><br>Nunca dudes de lo importante que eres para mí."</div>
+
+        <!-- 3. Fotografías individuales y ramo final -->
+        <img src="image_32c6fb.jpg" id="img-girasol" class="flor-img" alt="Girasol">
+        <img src="image_32d262.jpg" id="img-tulipan" class="flor-img" alt="Tulipán">
+        <img src="image_32e489.jpg" id="img-lilium" class="flor-img" alt="Lilium">
+        <img src="image_333b02.jpg" id="img-ramo" class="flor-img" alt="Ramo de Flores Completo">
+
+        <!-- 4. Textos de cada flor -->
+        <div id="texto-girasol" class="escena" style="bottom: 12%;">"Para que nunca olvides que, incluso en los días
+            grises, aquí tienes un lugar cálido."</div>
+        <div id="texto-tulipan" class="escena" style="bottom: 12%;">"Un tulipán que guarda el cariño profundo, sincero y
+            paciente que siento por ti."</div>
+        <div id="texto-lilium" class="escena" style="bottom: 12%;">"Y un lilium para abrazarte a la distancia, para que
+            sepas que nunca vas a estar sola."</div>
+
+        <!-- 5. Dedicatoria final -->
+        <div id="texto-final" class="escena final-texto" style="bottom: 10%;">Te quiero mucho mi Amanda hermosa.....
+        </div>
+    </div>
+
+    <script>
+        function verificarClave() {
+            let intento = document.getElementById('clave').value.toLowerCase().trim();
+            if (intento === 'san fermin' || intento === 'san fermín') {
+                document.getElementById('pantalla-clave').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('pantalla-clave').style.display = 'none';
+                    iniciarPelicula();
+                }, 1000);
+            } else {
+                document.getElementById('error').style.opacity = '1';
+                setTimeout(() => { document.getElementById('error').style.opacity = '0'; }, 2000);
+            }
+        }
+
+        function mostrarOcultar(id, delayMostrar, delayOcultar) {
+            setTimeout(() => { document.getElementById(id).classList.add('visible'); }, delayMostrar);
+            if (delayOcultar) {
+                setTimeout(() => { document.getElementById(id).classList.remove('visible'); }, delayOcultar);
+            }
+        }
+
+        function iniciarPelicula() {
+            // Textos iniciales
+            mostrarOcultar('mensaje1', 1000, 7000);
+            mostrarOcultar('mensaje2', 8000, 14000);
+
+            // Escena 1: Girasol
+            setTimeout(() => {
+                document.getElementById('img-girasol').classList.add('visible');
+                document.getElementById('texto-girasol').classList.add('visible');
+            }, 15000);
+            setTimeout(() => {
+                document.getElementById('img-girasol').classList.remove('visible');
+                document.getElementById('texto-girasol').classList.remove('visible');
+            }, 22000);
+
+            // Escena 2: Tulipán
+            setTimeout(() => {
+                document.getElementById('img-tulipan').classList.add('visible');
+                document.getElementById('texto-tulipan').classList.add('visible');
+            }, 23000);
+            setTimeout(() => {
+                document.getElementById('img-tulipan').classList.remove('visible');
+                document.getElementById('texto-tulipan').classList.remove('visible');
+            }, 30000);
+
+            // Escena 3: Lilium
+            setTimeout(() => {
+                document.getElementById('img-lilium').classList.add('visible');
+                document.getElementById('texto-lilium').classList.add('visible');
+            }, 31000);
+            setTimeout(() => {
+                document.getElementById('img-lilium').classList.remove('visible');
+                document.getElementById('texto-lilium').classList.remove('visible');
+            }, 38000);
+
+            // Escena 4: Gran Ramo Final y dedicatoria
+            setTimeout(() => {
+                document.getElementById('img-ramo').classList.add('visible');
+                document.getElementById('texto-final').classList.add('visible');
+            }, 39000);
+        }
+    </script>
+</body>
+
+</html>
